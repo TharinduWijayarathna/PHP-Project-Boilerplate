@@ -1,0 +1,66 @@
+#!/usr/bin/env php
+<?php
+
+if ($argc < 2) {
+    echo "Usage: radiant <command>\n";
+    exit(1);
+}
+
+$command = $argv[1];
+
+switch ($command) {
+    case 'migrate':
+        exec('vendor/bin/phinx migrate', $output, $returnVar);
+        echo implode("\n", $output) . "\n";
+        exit($returnVar);
+
+    case 'rollback':
+        exec('vendor/bin/phinx rollback', $output, $returnVar);
+        echo implode("\n", $output) . "\n";
+        exit($returnVar);
+
+    case 'status':
+        exec('vendor/bin/phinx status', $output, $returnVar);
+        echo implode("\n", $output) . "\n";
+        exit($returnVar);
+
+    case 'create':
+        if (isset($argv[2])) {
+            $type = $argv[2];
+            switch ($type) {
+                case 'migration':
+                    if (isset($argv[3])) {
+                        $migrationName = $argv[3];
+                        exec('vendor/bin/phinx create ' . escapeshellarg($migrationName), $output, $returnVar);
+                        echo implode("\n", $output) . "\n";
+                    } else {
+                        echo "Usage: radiant create migration <MigrationName>\n";
+                        exit(1);
+                    }
+                    break;
+                
+                case 'seed':
+                    if (isset($argv[3])) {
+                        $seedName = $argv[3];
+                        exec('vendor/bin/phinx seed:create ' . escapeshellarg($seedName), $output, $returnVar);
+                        echo implode("\n", $output) . "\n";
+                    } else {
+                        echo "Usage: radiant create seed <SeedName>\n";
+                        exit(1);
+                    }
+                    break;
+
+                default:
+                    echo "Unknown create command: $type\n";
+                    exit(1);
+            }
+            exit($returnVar);
+        } else {
+            echo "Usage: radiant create <migration|seed> <Name>\n";
+            exit(1);
+        }
+
+    default:
+        echo "Unknown command: $command\n";
+        exit(1);
+}
