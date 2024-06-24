@@ -2,7 +2,7 @@
 <?php
 
 if ($argc < 2) {
-    echo "Usage: radiant <command>\n";
+    echo "Usage: cmdrunner <command>\n";
     exit(1);
 }
 
@@ -34,18 +34,18 @@ switch ($command) {
                         exec('vendor/bin/phinx create ' . escapeshellarg($migrationName), $output, $returnVar);
                         echo implode("\n", $output) . "\n";
                     } else {
-                        echo "Usage: radiant create migration <MigrationName>\n";
+                        echo "Usage: cmdrunner create migration <MigrationName>\n";
                         exit(1);
                     }
                     break;
-                
+
                 case 'seed':
                     if (isset($argv[3])) {
                         $seedName = $argv[3];
                         exec('vendor/bin/phinx seed:create ' . escapeshellarg($seedName), $output, $returnVar);
                         echo implode("\n", $output) . "\n";
                     } else {
-                        echo "Usage: radiant create seed <SeedName>\n";
+                        echo "Usage: cmdrunner create seed <SeedName>\n";
                         exit(1);
                     }
                     break;
@@ -56,9 +56,14 @@ switch ($command) {
             }
             exit($returnVar);
         } else {
-            echo "Usage: radiant create <migration|seed> <Name>\n";
+            echo "Usage: cmdrunner create <migration|seed> <Name>\n";
             exit(1);
         }
+
+    case 'seed':
+        exec('vendor/bin/phinx seed:run', $output, $returnVar);
+        echo implode("\n", $output) . "\n";
+        exit($returnVar);
 
     default:
         echo "Unknown command: $command\n";
