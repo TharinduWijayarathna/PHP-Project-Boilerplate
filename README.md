@@ -38,37 +38,37 @@ This project is a PHP application boilerplate using Laravel components and Phinx
 ### Running Migrations
 
 ```bash
-vendor/bin/phinx migrate
+./cmdrunner migrate
 ```
 
 ### Rolling Back Migrations
 
 ```bash
-vendor/bin/phinx rollback
+./cmdrunner rollback
 ```
 
 ### Viewing Migration Status
 
 ```bash
-vendor/bin/phinx status
+./cmdrunner status
 ```
 
 ### Creating a New Migration
 
 ```bash
-vendor/bin/phinx create MyNewMigration
+./cmdrunner create migration MyNewMigration
 ```
 
 ### Creating a New Seeder
 
 ```bash
-vendor/bin/phinx seed:create MyNewSeeder
+./cmdrunner create seed MyNewSeeder
 ```
 
 ### Running Seeders
 
 ```bash
-vendor/bin/phinx seed:run
+./cmdrunner seed
 ```
 
 ### Running Tests
